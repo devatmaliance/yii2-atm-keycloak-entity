@@ -116,4 +116,38 @@ final class KeycloakClient extends BaseEntity
 
         return false;
     }
+
+    /**
+     * @param KeycloakUser $keycloakUser
+     * @param KeycloakClientRole[] $roles
+     * @return bool
+     */
+    public function removeRolesToUser(KeycloakUser $keycloakUser, array $roles): bool
+    {
+        try {
+            $response = KeycloakApi::getInstance()->getManager()->deleteUserClientRoleMappings([
+                'id' => $keycloakUser->getId(),
+                'client' => $this->getId(),
+                'roles' => array_map(static function (KeycloakClientRole $role) {
+                    return [
+                        'id' => $role->getId(),
+                        'name' => $role->getName(),
+                        'description' => $role->getDescription(),
+                        'containerId' => $role->getContainerId(),
+                        'clientRole' => $role->isClientRole(),
+                    ];
+                }, $roles),
+            ]);
+
+            if (isset($response['error'])) {
+                throw new KeycloakUserException($response['error']);
+            }
+
+            return true;
+        } catch (Throwable $exception) {
+            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        }
+
+        return false;
+    }
 }
