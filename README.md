@@ -23,9 +23,8 @@ return [
 return [
     'components' => [
         'keycloakEntityManager' => [
-            'client_id' => 'admin-cli',
-            'baseUrl' => 'http://localhost:8180',
             'realm' => 'master',
+            'baseUrl' => 'http://localhost:8180',
             'username' => 'admin',
             'password' => '1234',
         ],

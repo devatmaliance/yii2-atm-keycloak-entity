@@ -28,10 +28,11 @@ final class KeycloakApi
         }
 
         $this->manager = KeycloakClient::factory([
+            'grant_type' => 'password',
+            'realm' => $keycloakEntityManager->getConfiguration()->getRealm(),
+            'baseUri' => $keycloakEntityManager->getConfiguration()->getBaseUrl(),
             'username' => $keycloakEntityManager->getConfiguration()->getUsername(),
             'password' => $keycloakEntityManager->getConfiguration()->getPassword(),
-            'client_id' => $keycloakEntityManager->getConfiguration()->getClientId(),
-            'baseUri' => $keycloakEntityManager->getConfiguration()->getBaseUrl(),
             'custom_operations' => [
                 'getFilteredClientRoles' => [
                     'uri' => 'admin/realms/{realm}/clients/{id}/roles',
