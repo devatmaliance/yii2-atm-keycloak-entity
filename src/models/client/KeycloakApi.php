@@ -13,7 +13,7 @@ use yii\base\InvalidConfigException;
 final class KeycloakApi
 {
     private KeycloakClient $manager;
-    private static array $instances = [];
+    private static ?KeycloakApi $instance = null;
 
     /**
      * @throws InvalidConfigException
@@ -79,13 +79,8 @@ final class KeycloakApi
     {
     }
 
-    /**
-     * @return mixed
-     * @throws RuntimeException
-     */
-    public function __wakeup()
+    private function __wakeup()
     {
-        throw new RuntimeException("Cannot unserialize a singleton.");
     }
 
     /**
@@ -93,13 +88,11 @@ final class KeycloakApi
      */
     public static function getInstance(): KeycloakApi
     {
-        $currentClass = self::class;
-
-        if (!isset(self::$instances[$currentClass])) {
-            self::$instances[$currentClass] = new self();
+        if (!(self::$instance instanceof self)) {
+            self::$instance = new self();
         }
 
-        return self::$instances[$currentClass];
+        return self::$instance;
     }
 
     /**
