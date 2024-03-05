@@ -19,7 +19,7 @@
         "symfony/property-info": "^5.4",
         "symfony/serializer": "^5.4",
         "doctrine/annotations": "^1.13",
-        "mohammad-waleed/keycloak-admin-client": "^0.34.0"
+        "mohammad-waleed/keycloak-admin-client": "^0.37.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"

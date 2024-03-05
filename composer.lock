@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0176611263f9db64c36b2ff0b55828a1",
+    "content-hash": "8fa06f36c816e1a456c4b1083502617c",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -986,16 +986,16 @@
         },
         {
             "name": "mohammad-waleed/keycloak-admin-client",
-            "version": "v0.34.0",
+            "version": "v0.37.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/MohammadWaleed/keycloak-admin-client.git",
-                "reference": "dc745ddfaeb62162113af72c19ac50817dfc8b70"
+                "reference": "0c75a00ca878418c2dbd3bdc4177a74c143a175d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MohammadWaleed/keycloak-admin-client/zipball/dc745ddfaeb62162113af72c19ac50817dfc8b70",
-                "reference": "dc745ddfaeb62162113af72c19ac50817dfc8b70",
+                "url": "https://api.github.com/repos/MohammadWaleed/keycloak-admin-client/zipball/0c75a00ca878418c2dbd3bdc4177a74c143a175d",
+                "reference": "0c75a00ca878418c2dbd3bdc4177a74c143a175d",
                 "shasum": ""
             },
             "require": {
@@ -1022,9 +1022,9 @@
             "description": "Connect to keycloak admin api easily",
             "support": {
                 "issues": "https://github.com/MohammadWaleed/keycloak-admin-client/issues",
-                "source": "https://github.com/MohammadWaleed/keycloak-admin-client/tree/v0.34.0"
+                "source": "https://github.com/MohammadWaleed/keycloak-admin-client/tree/v0.37.0"
             },
-            "time": "2022-12-14T07:18:17+00:00"
+            "time": "2023-05-23T20:26:01+00:00"
         },
         {
             "name": "paragonie/random_compat",
