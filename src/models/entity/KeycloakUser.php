@@ -33,10 +33,11 @@ final class KeycloakUser extends BaseEntity
         string $id,
         string $email,
         string $username,
-        bool $enabled,
-        bool $emailVerified,
+        bool   $enabled,
+        bool   $emailVerified,
         ?array $attributes = null
-    ) {
+    )
+    {
         $this->id = $id;
         $this->email = $email;
         $this->username = $username;
@@ -107,8 +108,9 @@ final class KeycloakUser extends BaseEntity
      */
     public function setAttributes(
         array $attributes,
-        bool $canMergeWithExistingAttributes = true
-    ): self {
+        bool  $canMergeWithExistingAttributes = true
+    ): self
+    {
         $this->attributes = $canMergeWithExistingAttributes ? array_merge($this->attributes, $attributes) : $attributes;
 
         return $this;
@@ -179,6 +181,28 @@ final class KeycloakUser extends BaseEntity
     {
         try {
             $response = KeycloakApi::getInstance()->getManager()->deleteUser([
+                'id' => $this->getId(),
+            ]);
+
+            if (isset($response['error'])) {
+                throw new KeycloakUserException($response['error']);
+            }
+
+            return true;
+        } catch (Throwable $exception) {
+            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function logout(): bool
+    {
+        try {
+            $response = KeycloakApi::getInstance()->getManager()->logoutUser([
                 'id' => $this->getId(),
             ]);
 
