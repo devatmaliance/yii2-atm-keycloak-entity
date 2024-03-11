@@ -81,46 +81,40 @@ final class ClientRoleFinder
     }
 
     /**
-     * @return ClientRole|null
+     * @return ClientRole
      * Returns a specific client role based on uuid or role name
      */
-    public function one(): ?ClientRole
+    public function one(): ClientRole
     {
-        try {
-            $response = null;
+        $response = null;
 
-            if (!empty($this->uuid)) {
-                $response = KeycloakApi::getInstance()->getManager()->getRealmRoleById([
-                    'role-id' => $this->uuid,
-                ]);
-            } elseif (!empty($this->roleName)) {
-                $response = KeycloakApi::getInstance()->getManager()->getClientRole([
-                    'id' => $this->client->getId(),
-                    'role-name' => $this->roleName,
-                ]);
-            }
-
-            if (null === $response) {
-                return null;
-            }
-
-            if (isset($response['error'])) {
-                throw new KeycloakClientRoleFinderException($response['error']);
-            }
-
-            /* @var ClientRole $keycloakClientRole */
-            $keycloakClientRole = (new Normalizer())->denormalize($response, ClientRole::class);
-
-            if (!$keycloakClientRole->isClientRole()) {
-                throw new KeycloakClientRoleFinderException("Something is wrong. Found role is not a client role. UUID [$this->uuid]");
-            }
-
-            return $keycloakClientRole;
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (!empty($this->uuid)) {
+            $response = KeycloakApi::getInstance()->getManager()->getRealmRoleById([
+                'role-id' => $this->uuid,
+            ]);
+        } elseif (!empty($this->roleName)) {
+            $response = KeycloakApi::getInstance()->getManager()->getClientRole([
+                'id' => $this->client->getId(),
+                'role-name' => $this->roleName,
+            ]);
         }
 
-        return null;
+        if (!$response) {
+            throw new KeycloakClientRoleFinderException('Empty Response');
+        }
+
+        if (isset($response['error'])) {
+            throw new KeycloakClientRoleFinderException($response['error']);
+        }
+
+        /* @var ClientRole $keycloakClientRole */
+        $keycloakClientRole = (new Normalizer())->denormalize($response, ClientRole::class);
+
+        if (!$keycloakClientRole->isClientRole()) {
+            throw new KeycloakClientRoleFinderException("Something is wrong. Found role is not a client role. UUID [$this->uuid]");
+        }
+
+        return $keycloakClientRole;
     }
 
     /**
@@ -129,25 +123,19 @@ final class ClientRoleFinder
      */
     public function all(): array
     {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->getFilteredClientRoles(
-                array_filter([
-                    'id' => $this->client->getId(),
-                    'first' => $this->offset,
-                    'max' => $this->limit,
-                    'search' => $this->roleName,
-                ])
-            );
+        $response = KeycloakApi::getInstance()->getManager()->getFilteredClientRoles(
+            array_filter([
+                'id' => $this->client->getId(),
+                'first' => $this->offset,
+                'max' => $this->limit,
+                'search' => $this->roleName,
+            ])
+        );
 
-            if (isset($response['error'])) {
-                throw new KeycloakClientRoleFinderException($response['error']);
-            }
-
-            return (new Normalizer())->denormalize($response, sprintf('%s[]', ClientRole::class));
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (isset($response['error'])) {
+            throw new KeycloakClientRoleFinderException($response['error']);
         }
 
-        return [];
+        return (new Normalizer())->denormalize($response, sprintf('%s[]', ClientRole::class));
     }
 }

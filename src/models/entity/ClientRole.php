@@ -14,51 +14,36 @@ use Yii;
 final class ClientRole extends Role
 {
     /**
-     * @return bool
+     * @return void
      */
-    public function update(): bool
+    public function update(): void
     {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->updateClientRole([
-                'id' => $this->containerId,
-                'role-name' => $this->getInitialProperty('name'),
-                'name' => $this->getName(),
-                'description' => $this->getDescription(),
-            ]);
+        $response = KeycloakApi::getInstance()->getManager()->updateClientRole([
+            'id' => $this->containerId,
+            'role-name' => $this->getInitialProperty('name'),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+        ]);
 
-            if (isset($response['error'])) {
-                throw new KeycloakClientRoleException($response['error']);
-            }
-
-            return true;
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (isset($response['error'])) {
+            throw new KeycloakClientRoleException($response['error']);
         }
-
-        return false;
     }
 
     /**
-     * @return bool
+     * @return void
      */
-    public function delete(): bool
+    public function delete(): void
     {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->deleteClientRole([
-                'id' => $this->getContainerId(),
-                'role-name' => $this->getName(),
-            ]);
+        $response = KeycloakApi::getInstance()->getManager()->deleteClientRole([
+            'id' => $this->getContainerId(),
+            'role-name' => $this->getName(),
+        ]);
 
-            if (isset($response['error'])) {
-                throw new KeycloakClientRoleException($response['error']);
-            }
-
-            return true;
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (isset($response['error'])) {
+            throw new KeycloakClientRoleException($response['error']);
         }
 
-        return false;
     }
 
     /**
@@ -71,24 +56,18 @@ final class ClientRole extends Role
 
     /**
      * @param KeycloakRoleCreationDTO $keycloakRoleCreationDTO
-     * @return static|null
+     * @return static
      */
-    public static function create(KeycloakRoleCreationDTO $keycloakRoleCreationDTO): ?self
+    public static function create(KeycloakRoleCreationDTO $keycloakRoleCreationDTO): self
     {
-        try {
-            KeycloakApi::getInstance()->getManager()->createClientRole(
-                array_filter([
-                    'id' => $keycloakRoleCreationDTO->getClient()->getId(),
-                    'name' => $keycloakRoleCreationDTO->getName(),
-                    'description' => $keycloakRoleCreationDTO->getDescription(),
-                ])
-            );
+        KeycloakApi::getInstance()->getManager()->createClientRole(
+            array_filter([
+                'id' => $keycloakRoleCreationDTO->getClient()->getId(),
+                'name' => $keycloakRoleCreationDTO->getName(),
+                'description' => $keycloakRoleCreationDTO->getDescription(),
+            ])
+        );
 
-            return self::find()->whereRoleName($keycloakRoleCreationDTO->getName())->whereClient($keycloakRoleCreationDTO->getClient())->one();
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
-        }
-
-        return null;
+        return self::find()->whereRoleName($keycloakRoleCreationDTO->getName())->whereClient($keycloakRoleCreationDTO->getClient())->one();
     }
 }

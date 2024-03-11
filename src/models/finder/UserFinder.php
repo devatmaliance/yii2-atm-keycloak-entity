@@ -146,55 +146,43 @@ final class UserFinder
     }
 
     /**
-     * @return User|null
+     * @return User
      * Returns a specific user based on uuid or email
      */
-    public function one(): ?User
+    public function one(): User
     {
         if (!empty($this->uuid)) {
-            try {
-                $response = KeycloakApi::getInstance()->getManager()->getUser([
-                    'id' => $this->uuid,
-                ]);
+            $response = KeycloakApi::getInstance()->getManager()->getUser([
+                'id' => $this->uuid,
+            ]);
 
-                if (isset($response['error'])) {
-                    throw new KeycloakUserFinderException($response['error']);
-                }
-
-                return (new Normalizer())->denormalize($response, User::class);
-            } catch (Throwable $exception) {
-                Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+            if (isset($response['error'])) {
+                throw new KeycloakUserFinderException($response['error']);
             }
 
-            return null;
+            return (new Normalizer())->denormalize($response, User::class);
         }
 
         if (!empty($this->email)) {
-            try {
-                $keycloakUsers = $this->whereExact(true)->all();
+            $keycloakUsers = $this->whereExact(true)->all();
 
-                if (count($keycloakUsers) !== 1) {
-                    throw new KeycloakUserFinderException("Number of found users with email [$this->email] !== 1");
-                }
-
-                /* @var User $keycloakUser */
-                $keycloakUser = current($keycloakUsers);
-
-                if (mb_strtolower($keycloakUser->getEmail(), 'UTF-8') !== mb_strtolower($this->email, 'UTF-8')) {
-                    throw new KeycloakUserFinderException(
-                        "Something is wrong. Specified email [$this->email] not equal keycloak email [{$keycloakUser->getEmail()}]"
-                    );
-                }
-
-                return $keycloakUser;
-            } catch (Throwable $exception) {
-                Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+            if (count($keycloakUsers) !== 1) {
+                throw new KeycloakUserFinderException("Number of found users with email [$this->email] !== 1");
             }
 
-            return null;
+            /* @var User $keycloakUser */
+            $keycloakUser = current($keycloakUsers);
+
+            if (mb_strtolower($keycloakUser->getEmail(), 'UTF-8') !== mb_strtolower($this->email, 'UTF-8')) {
+                throw new KeycloakUserFinderException(
+                    "Something is wrong. Specified email [$this->email] not equal keycloak email [{$keycloakUser->getEmail()}]"
+                );
+            }
+
+            return $keycloakUser;
         }
 
-        return null;
+        throw new KeycloakUserFinderException("Not found user: $this->email");
     }
 
     /**
@@ -203,30 +191,24 @@ final class UserFinder
      */
     public function all(): array
     {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->getUsers(
-                array_filter([
-                    'firstName' => $this->name,
-                    'lastName' => $this->surname,
-                    'email' => $this->email,
-                    'username' => $this->username,
-                    'q' => $this->attributes,
-                    'search' => $this->search,
-                    'first' => $this->offset,
-                    'exact' => $this->exact,
-                    'max' => $this->limit,
-                ])
-            );
+        $response = KeycloakApi::getInstance()->getManager()->getUsers(
+            array_filter([
+                'firstName' => $this->name,
+                'lastName' => $this->surname,
+                'email' => $this->email,
+                'username' => $this->username,
+                'q' => $this->attributes,
+                'search' => $this->search,
+                'first' => $this->offset,
+                'exact' => $this->exact,
+                'max' => $this->limit,
+            ])
+        );
 
-            if (isset($response['error'])) {
-                throw new KeycloakUserFinderException($response['error']);
-            }
-
-            return (new Normalizer())->denormalize($response, sprintf('%s[]', User::class));
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (isset($response['error'])) {
+            throw new KeycloakUserFinderException($response['error']);
         }
 
-        return [];
+        return (new Normalizer())->denormalize($response, sprintf('%s[]', User::class));
     }
 }

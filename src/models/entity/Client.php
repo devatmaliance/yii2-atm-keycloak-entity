@@ -65,89 +65,67 @@ final class Client extends BaseEntity
      */
     public function getUserRoles(User $keycloakUser): array
     {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->getUserClientRoleMappings([
-                'client' => $this->id,
-                'id' => $keycloakUser->getId(),
-            ]);
+        $response = KeycloakApi::getInstance()->getManager()->getUserClientRoleMappings([
+            'client' => $this->id,
+            'id' => $keycloakUser->getId(),
+        ]);
 
-            if (isset($response['error'])) {
-                throw new KeycloakUserException($response['error']);
-            }
-
-            return (new Normalizer())->denormalize($response, sprintf('%s[]', ClientRole::class));
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (isset($response['error'])) {
+            throw new KeycloakUserException($response['error']);
         }
 
-        return [];
+        return (new Normalizer())->denormalize($response, sprintf('%s[]', ClientRole::class));
     }
 
     /**
      * @param User $keycloakUser
      * @param ClientRole[] $roles
-     * @return bool
+     * @return void
      */
-    public function addRolesToUser(User $keycloakUser, array $roles): bool
+    public function addRolesToUser(User $keycloakUser, array $roles): void
     {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->addUserClientRoleMappings([
-                'id' => $keycloakUser->getId(),
-                'client' => $this->getId(),
-                'roles' => array_map(static function (ClientRole $role) {
-                    return [
-                        'id' => $role->getId(),
-                        'name' => $role->getName(),
-                        'description' => $role->getDescription(),
-                        'containerId' => $role->getContainerId(),
-                        'clientRole' => $role->isClientRole(),
-                    ];
-                }, $roles),
-            ]);
+        $response = KeycloakApi::getInstance()->getManager()->addUserClientRoleMappings([
+            'id' => $keycloakUser->getId(),
+            'client' => $this->getId(),
+            'roles' => array_map(static function (ClientRole $role) {
+                return [
+                    'id' => $role->getId(),
+                    'name' => $role->getName(),
+                    'description' => $role->getDescription(),
+                    'containerId' => $role->getContainerId(),
+                    'clientRole' => $role->isClientRole(),
+                ];
+            }, $roles),
+        ]);
 
-            if (isset($response['error'])) {
-                throw new KeycloakUserException($response['error']);
-            }
-
-            return true;
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (isset($response['error'])) {
+            throw new KeycloakUserException($response['error']);
         }
-
-        return false;
     }
 
     /**
      * @param User $keycloakUser
      * @param ClientRole[] $roles
-     * @return bool
+     * @return void
      */
-    public function removeRolesToUser(User $keycloakUser, array $roles): bool
+    public function removeRolesToUser(User $keycloakUser, array $roles): void
     {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->deleteUserClientRoleMappings([
-                'id' => $keycloakUser->getId(),
-                'client' => $this->getId(),
-                'roles' => array_map(static function (ClientRole $role) {
-                    return [
-                        'id' => $role->getId(),
-                        'name' => $role->getName(),
-                        'description' => $role->getDescription(),
-                        'containerId' => $role->getContainerId(),
-                        'clientRole' => $role->isClientRole(),
-                    ];
-                }, $roles),
-            ]);
+        $response = KeycloakApi::getInstance()->getManager()->deleteUserClientRoleMappings([
+            'id' => $keycloakUser->getId(),
+            'client' => $this->getId(),
+            'roles' => array_map(static function (ClientRole $role) {
+                return [
+                    'id' => $role->getId(),
+                    'name' => $role->getName(),
+                    'description' => $role->getDescription(),
+                    'containerId' => $role->getContainerId(),
+                    'clientRole' => $role->isClientRole(),
+                ];
+            }, $roles),
+        ]);
 
-            if (isset($response['error'])) {
-                throw new KeycloakUserException($response['error']);
-            }
-
-            return true;
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
+        if (isset($response['error'])) {
+            throw new KeycloakUserException($response['error']);
         }
-
-        return false;
     }
 }
