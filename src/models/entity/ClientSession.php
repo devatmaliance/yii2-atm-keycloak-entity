@@ -4,7 +4,7 @@ namespace atmaliance\yii2_keycloak_entity\models\entity;
 
 use atmaliance\yii2_keycloak_entity\models\finder\ClientSessionFinder;
 
-class ClientSession extends BaseEntity
+final class ClientSession extends BaseEntity
 {
     private string $id;
     private string $username;

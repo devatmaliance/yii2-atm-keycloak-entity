@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace atmaliance\yii2_keycloak_entity\models\finder;
 
 use atmaliance\yii2_keycloak_entity\models\client\KeycloakApi;
-use atmaliance\yii2_keycloak_entity\models\entity\KeycloakClient;
-use atmaliance\yii2_keycloak_entity\models\entity\KeycloakClientRole;
+use atmaliance\yii2_keycloak_entity\models\entity\Client;
+use atmaliance\yii2_keycloak_entity\models\entity\ClientRole;
 use atmaliance\yii2_keycloak_entity\models\exception\KeycloakClientRoleFinderException;
 use atmaliance\yii2_keycloak_entity\models\serializer\Normalizer;
 use Throwable;
 use Yii;
 
-final class KeycloakClientRoleFinder
+final class ClientRoleFinder
 {
-    private ?KeycloakClient $client = null;
+    private ?Client $client = null;
     private ?int $offset = null;
     private ?int $limit = null;
     private ?string $uuid = null;
@@ -69,11 +69,11 @@ final class KeycloakClientRoleFinder
     }
 
     /**
-     * @param KeycloakClient $keycloakClient
+     * @param Client $keycloakClient
      * @return $this
      * Client
      */
-    public function whereClient(KeycloakClient $keycloakClient): self
+    public function whereClient(Client $keycloakClient): self
     {
         $this->client = $keycloakClient;
 
@@ -81,10 +81,10 @@ final class KeycloakClientRoleFinder
     }
 
     /**
-     * @return KeycloakClientRole|null
+     * @return ClientRole|null
      * Returns a specific client role based on uuid or role name
      */
-    public function one(): ?KeycloakClientRole
+    public function one(): ?ClientRole
     {
         try {
             $response = null;
@@ -108,8 +108,8 @@ final class KeycloakClientRoleFinder
                 throw new KeycloakClientRoleFinderException($response['error']);
             }
 
-            /* @var KeycloakClientRole $keycloakClientRole */
-            $keycloakClientRole = (new Normalizer())->denormalize($response, KeycloakClientRole::class);
+            /* @var ClientRole $keycloakClientRole */
+            $keycloakClientRole = (new Normalizer())->denormalize($response, ClientRole::class);
 
             if (!$keycloakClientRole->isClientRole()) {
                 throw new KeycloakClientRoleFinderException("Something is wrong. Found role is not a client role. UUID [$this->uuid]");
@@ -124,7 +124,7 @@ final class KeycloakClientRoleFinder
     }
 
     /**
-     * @return KeycloakClientRole[]
+     * @return ClientRole[]
      * Returns all client roles as an array.
      */
     public function all(): array
@@ -143,7 +143,7 @@ final class KeycloakClientRoleFinder
                 throw new KeycloakClientRoleFinderException($response['error']);
             }
 
-            return (new Normalizer())->denormalize($response, sprintf('%s[]', KeycloakClientRole::class));
+            return (new Normalizer())->denormalize($response, sprintf('%s[]', ClientRole::class));
         } catch (Throwable $exception) {
             Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
         }

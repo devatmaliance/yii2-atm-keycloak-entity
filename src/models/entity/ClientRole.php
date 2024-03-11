@@ -7,11 +7,11 @@ namespace atmaliance\yii2_keycloak_entity\models\entity;
 use atmaliance\yii2_keycloak_entity\models\client\KeycloakApi;
 use atmaliance\yii2_keycloak_entity\models\dto\KeycloakRoleCreationDTO;
 use atmaliance\yii2_keycloak_entity\models\exception\KeycloakClientRoleException;
-use atmaliance\yii2_keycloak_entity\models\finder\KeycloakClientRoleFinder;
+use atmaliance\yii2_keycloak_entity\models\finder\ClientRoleFinder;
 use Throwable;
 use Yii;
 
-final class KeycloakClientRole extends KeycloakRole
+final class ClientRole extends Role
 {
     /**
      * @return bool
@@ -62,11 +62,11 @@ final class KeycloakClientRole extends KeycloakRole
     }
 
     /**
-     * @return KeycloakClientRoleFinder
+     * @return ClientRoleFinder
      */
-    public static function find(): KeycloakClientRoleFinder
+    public static function find(): ClientRoleFinder
     {
-        return new KeycloakClientRoleFinder();
+        return new ClientRoleFinder();
     }
 
     /**

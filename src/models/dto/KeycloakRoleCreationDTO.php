@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace atmaliance\yii2_keycloak_entity\models\dto;
 
-use atmaliance\yii2_keycloak_entity\models\entity\KeycloakClient;
+use atmaliance\yii2_keycloak_entity\models\entity\Client;
 
 final class KeycloakRoleCreationDTO
 {
-    private KeycloakClient $client;
+    private Client $client;
     private string $name;
     private ?string $description;
 
     /**
-     * @param KeycloakClient $client
+     * @param Client $client
      * @param string $name
      * @param string|null $description
      */
-    public function __construct(KeycloakClient $client, string $name, ?string $description = null)
+    public function __construct(Client $client, string $name, ?string $description = null)
     {
         $this->client = $client;
         $this->name = $name;
@@ -25,9 +25,9 @@ final class KeycloakRoleCreationDTO
     }
 
     /**
-     * @return KeycloakClient
+     * @return Client
      */
-    public function getClient(): KeycloakClient
+    public function getClient(): Client
     {
         return $this->client;
     }

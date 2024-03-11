@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace atmaliance\yii2_keycloak_entity\models\finder;
 
 use atmaliance\yii2_keycloak_entity\models\client\KeycloakApi;
-use atmaliance\yii2_keycloak_entity\models\entity\KeycloakClient;
+use atmaliance\yii2_keycloak_entity\models\entity\Client;
 use atmaliance\yii2_keycloak_entity\models\exception\KeycloakClientFinderException;
 use atmaliance\yii2_keycloak_entity\models\exception\KeycloakUserException;
 use atmaliance\yii2_keycloak_entity\models\serializer\Normalizer;
 use Throwable;
 use Yii;
 
-final class KeycloakClientFinder
+final class ClientFinder
 {
     private ?string $clientId = null;
 
@@ -29,10 +29,10 @@ final class KeycloakClientFinder
     }
 
     /**
-     * @return KeycloakClient|null
+     * @return Client|null
      * Returns a client based on the client id parameter
      */
-    public function one(): ?KeycloakClient
+    public function one(): ?Client
     {
         try {
             if (empty($this->clientId)) {
@@ -62,7 +62,7 @@ final class KeycloakClientFinder
     }
 
     /**
-     * @return KeycloakClient[]
+     * @return Client[]
      * Returns all clients as an array.
      */
     public function all(): array
@@ -78,7 +78,7 @@ final class KeycloakClientFinder
                 throw new KeycloakClientFinderException($response['error']);
             }
 
-            return (new Normalizer())->denormalize($response, sprintf('%s[]', KeycloakClient::class));
+            return (new Normalizer())->denormalize($response, sprintf('%s[]', Client::class));
         } catch (Throwable $exception) {
             Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
         }

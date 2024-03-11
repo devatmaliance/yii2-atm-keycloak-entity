@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace atmaliance\yii2_keycloak_entity\models\entity;
 
-class KeycloakRole extends BaseEntity
+class Role extends BaseEntity
 {
     protected string $id;
     protected string $name;

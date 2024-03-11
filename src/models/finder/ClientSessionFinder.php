@@ -3,21 +3,21 @@
 namespace atmaliance\yii2_keycloak_entity\models\finder;
 
 use atmaliance\yii2_keycloak_entity\models\client\KeycloakApi;
-use atmaliance\yii2_keycloak_entity\models\entity\KeycloakClient;
+use atmaliance\yii2_keycloak_entity\models\entity\Client;
 use atmaliance\yii2_keycloak_entity\models\entity\ClientSession;
 use atmaliance\yii2_keycloak_entity\models\exception\ClientSessionException;
 use atmaliance\yii2_keycloak_entity\models\serializer\Normalizer;
 
 class ClientSessionFinder
 {
-    private KeycloakClient $client;
+    private Client $client;
 
     /**
-     * @param KeycloakClient $keycloakClient
+     * @param Client $keycloakClient
      * @return $this
      * Client
      */
-    public function whereClient(KeycloakClient $keycloakClient): self
+    public function whereClient(Client $keycloakClient): self
     {
         $this->client = $keycloakClient;
 

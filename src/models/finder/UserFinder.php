@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace atmaliance\yii2_keycloak_entity\models\finder;
 
 use atmaliance\yii2_keycloak_entity\models\client\KeycloakApi;
-use atmaliance\yii2_keycloak_entity\models\entity\KeycloakUser;
+use atmaliance\yii2_keycloak_entity\models\entity\User;
 use atmaliance\yii2_keycloak_entity\models\exception\KeycloakUserFinderException;
 use atmaliance\yii2_keycloak_entity\models\serializer\Normalizer;
 use Throwable;
 use Yii;
 
-final class KeycloakUserFinder
+final class UserFinder
 {
     private ?int $offset = null;
     private ?int $limit = null;
@@ -146,10 +146,10 @@ final class KeycloakUserFinder
     }
 
     /**
-     * @return KeycloakUser|null
+     * @return User|null
      * Returns a specific user based on uuid or email
      */
-    public function one(): ?KeycloakUser
+    public function one(): ?User
     {
         if (!empty($this->uuid)) {
             try {
@@ -161,7 +161,7 @@ final class KeycloakUserFinder
                     throw new KeycloakUserFinderException($response['error']);
                 }
 
-                return (new Normalizer())->denormalize($response, KeycloakUser::class);
+                return (new Normalizer())->denormalize($response, User::class);
             } catch (Throwable $exception) {
                 Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
             }
@@ -177,7 +177,7 @@ final class KeycloakUserFinder
                     throw new KeycloakUserFinderException("Number of found users with email [$this->email] !== 1");
                 }
 
-                /* @var KeycloakUser $keycloakUser */
+                /* @var User $keycloakUser */
                 $keycloakUser = current($keycloakUsers);
 
                 if (mb_strtolower($keycloakUser->getEmail(), 'UTF-8') !== mb_strtolower($this->email, 'UTF-8')) {
@@ -198,7 +198,7 @@ final class KeycloakUserFinder
     }
 
     /**
-     * @return KeycloakUser[]
+     * @return User[]
      * Returns all users as an array.
      */
     public function all(): array
@@ -222,7 +222,7 @@ final class KeycloakUserFinder
                 throw new KeycloakUserFinderException($response['error']);
             }
 
-            return (new Normalizer())->denormalize($response, sprintf('%s[]', KeycloakUser::class));
+            return (new Normalizer())->denormalize($response, sprintf('%s[]', User::class));
         } catch (Throwable $exception) {
             Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
         }
