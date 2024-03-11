@@ -7,8 +7,6 @@ use atmaliance\yii2_keycloak_entity\models\entity\KeycloakClient;
 use atmaliance\yii2_keycloak_entity\models\entity\ClientSession;
 use atmaliance\yii2_keycloak_entity\models\exception\ClientSessionException;
 use atmaliance\yii2_keycloak_entity\models\serializer\Normalizer;
-use DateTime;
-use DateTimeZone;
 
 class ClientSessionFinder
 {
@@ -24,29 +22,6 @@ class ClientSessionFinder
         $this->client = $keycloakClient;
 
         return $this;
-    }
-
-    /**
-     * @param DateTime $startDateTime
-     * @param DateTime $endDateTime
-     * @return array
-     * @throws ClientSessionException
-     */
-    public function whereBetweenStart(DateTime $startDateTime, DateTime $endDateTime): array
-    {
-        $filteredSessions = [];
-
-        foreach ($this->all() as $session) {
-            $startTime = $session->getStart() / 1000;  // переводим миллисекунды в секунды
-            $startTime = DateTime::createFromFormat('U', (string)$startTime);
-            $startTime->setTimezone(new DateTimeZone(date_default_timezone_get()));
-
-            if ($startTime >= $startDateTime && $startTime <= $endDateTime) {
-                $filteredSessions[] = $session;
-            }
-        }
-
-        return $filteredSessions;
     }
 
     /**
