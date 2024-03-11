@@ -6,7 +6,7 @@ namespace atmaliance\yii2_keycloak_entity\models\exception;
 
 use Exception;
 
-final class KeycloakClientSessionException extends Exception
+final class ClientSessionException extends Exception
 {
 
 }

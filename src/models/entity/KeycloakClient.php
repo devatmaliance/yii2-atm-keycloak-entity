@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace atmaliance\yii2_keycloak_entity\models\entity;
 
 use atmaliance\yii2_keycloak_entity\models\client\KeycloakApi;
-use atmaliance\yii2_keycloak_entity\models\exception\KeycloakClientSessionException;
 use atmaliance\yii2_keycloak_entity\models\exception\KeycloakUserException;
 use atmaliance\yii2_keycloak_entity\models\finder\KeycloakClientFinder;
 use atmaliance\yii2_keycloak_entity\models\serializer\Normalizer;
@@ -77,28 +76,6 @@ final class KeycloakClient extends BaseEntity
             }
 
             return (new Normalizer())->denormalize($response, sprintf('%s[]', KeycloakClientRole::class));
-        } catch (Throwable $exception) {
-            Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
-        }
-
-        return [];
-    }
-
-    /**
-     * @return array
-     */
-    public function getSessions(): array
-    {
-        try {
-            $response = KeycloakApi::getInstance()->getManager()->getClientSessions([
-                'client' => $this->id,
-            ]);
-
-            if (isset($response['error'])) {
-                throw new KeycloakClientSessionException($response['error']);
-            }
-
-            return (new Normalizer())->denormalize($response, sprintf('%s[]', KeycloakClientSession::class));
         } catch (Throwable $exception) {
             Yii::error(sprintf('%s: %s', __METHOD__, $exception->getMessage()));
         }

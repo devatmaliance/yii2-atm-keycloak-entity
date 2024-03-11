@@ -2,7 +2,9 @@
 
 namespace atmaliance\yii2_keycloak_entity\models\entity;
 
-class KeycloakClientSession extends BaseEntity
+use atmaliance\yii2_keycloak_entity\models\finder\ClientSessionFinder;
+
+class ClientSession extends BaseEntity
 {
     private string $id;
     private string $username;
@@ -29,6 +31,14 @@ class KeycloakClientSession extends BaseEntity
         $this->lastAccess = $lastAccess;
         $this->rememberMe = $rememberMe;
         parent::__construct();
+    }
+
+    /**
+     * @return ClientSessionFinder
+     */
+    public static function find(): ClientSessionFinder
+    {
+        return new ClientSessionFinder();
     }
 
     /**
