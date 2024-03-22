@@ -27,10 +27,11 @@ class ClientSessionFinder
     /**
      * @return ClientSession[]
      */
-    public function all(): array
+    public function all(int $max = 100): array
     {
         $response = KeycloakApi::getInstance()->getManager()->getClientSessions([
             'id' => $this->client->getId(),
+            'max' => $max
         ]);
 
         if (isset($response['error'])) {
