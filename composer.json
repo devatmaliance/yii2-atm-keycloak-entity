@@ -19,7 +19,7 @@
         "symfony/property-info": "^5.4",
         "symfony/serializer": "^5.4",
         "doctrine/annotations": "^1.13",
-        "mohammad-waleed/keycloak-admin-client": "0.37"
+        "devatmaliance/keycloak-admin-client": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"
@@ -33,6 +33,10 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/devatmaliance/keycloak-admin-client"
         }
     ],
     "config": {
