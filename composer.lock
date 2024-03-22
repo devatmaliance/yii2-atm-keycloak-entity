@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d81f5af89869306fdccab1396c29aed",
+    "content-hash": "6b3f435e7cd457170c5c07812fa7a83c",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -171,6 +171,7 @@
                     "Keycloak\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
