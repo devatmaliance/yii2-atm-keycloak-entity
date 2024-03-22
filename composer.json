@@ -19,7 +19,7 @@
         "symfony/property-info": "^5.4",
         "symfony/serializer": "^5.4",
         "doctrine/annotations": "^1.13",
-        "devatmaliance/keycloak-admin-client": "dev-develop"
+        "devatmaliance/keycloak-admin-client": "0.*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"

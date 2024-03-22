@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b3f435e7cd457170c5c07812fa7a83c",
+    "content-hash": "607ce3116f0efebb215a8383757344c5",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -147,7 +147,7 @@
         },
         {
             "name": "devatmaliance/keycloak-admin-client",
-            "version": "dev-develop",
+            "version": "v0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/devatmaliance/keycloak-admin-client.git",
@@ -164,7 +164,6 @@
                 "guzzlehttp/guzzle-services": "^1.0",
                 "php": ">=5.6.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -183,7 +182,7 @@
             ],
             "description": "Connect to keycloak admin api easily",
             "support": {
-                "source": "https://github.com/devatmaliance/keycloak-admin-client/tree/develop"
+                "source": "https://github.com/devatmaliance/keycloak-admin-client/tree/v0.1"
             },
             "time": "2024-03-22T07:14:39+00:00"
         },
@@ -3378,7 +3377,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "devatmaliance/keycloak-admin-client": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
