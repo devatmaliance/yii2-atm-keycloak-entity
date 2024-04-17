@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace atmaliance\yii2_keycloak_entity\models\client;
 
-use atmaliance\yii2_keycloak_entity\KeycloakEntityManager;
+use atmaliance\yii2_keycloak_entity\KeycloakManagerConiguration;
 use Keycloak\Admin\KeycloakClient;
 use RuntimeException;
 use Yii;
@@ -20,19 +20,20 @@ final class KeycloakApi
      */
     private function __construct()
     {
-        /* @var KeycloakEntityManager $keycloakEntityManager */
-        $keycloakEntityManager = Yii::$app->get('keycloakEntityManager');
+        /* @var KeycloakManagerConiguration $keycloakManager */
+        $keycloakManager = Yii::$app->get('keycloakManagerConfiguration');
 
-        if (null === $keycloakEntityManager) {
+        if (!$keycloakManager) {
             throw new RuntimeException("Component «keycloakEntityManager» is not initialized");
         }
 
+        $configuration = $keycloakManager->getConfiguration();
         $this->manager = KeycloakClient::factory([
-            'grant_type' => 'password',
-            'realm' => $keycloakEntityManager->getConfiguration()->getRealm(),
-            'baseUri' => $keycloakEntityManager->getConfiguration()->getBaseUrl(),
-            'username' => $keycloakEntityManager->getConfiguration()->getUsername(),
-            'password' => $keycloakEntityManager->getConfiguration()->getPassword(),
+            'grant_type' => 'client_credentials',
+            'realm' => $configuration->getRealm(),
+            'baseUri' => $configuration->getBaseUrl(),
+            'client_id' => $configuration->getClientId(),
+            'client_secret' => $configuration->getClientSecret(),
             'custom_operations' => [
                 'getFilteredClientRoles' => [
                     'uri' => 'admin/realms/{realm}/clients/{id}/roles',

@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace atmaliance\yii2_keycloak_entity\models\dto;
 
-final class KeycloakEntityManagerConfigurationDTO
+final class KeycloakManagerConfigurationDTO
 {
     private string $realm;
     private string $baseUrl;
-    private string $username;
-    private string $password;
+    private string $clientId;
+    private string $clientSecret;
 
     /**
      * @param string $realm
      * @param string $baseUrl
-     * @param string $username
-     * @param string $password
+     * @param string $clientId
+     * @param string $clientSecret
      */
     public function __construct(
         string $realm,
         string $baseUrl,
-        string $username,
-        string $password
+        string $clientId,
+        string $clientSecret
     ) {
         $this->realm = $realm;
         $this->baseUrl = $baseUrl;
-        $this->username = $username;
-        $this->password = $password;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
     }
 
     /**
@@ -48,16 +48,16 @@ final class KeycloakEntityManagerConfigurationDTO
     /**
      * @return string
      */
-    public function getUsername(): string
+    public function getClientId(): string
     {
-        return $this->username;
+        return $this->clientId;
     }
 
     /**
      * @return string
      */
-    public function getPassword(): string
+    public function getClientSecret(): string
     {
-        return $this->password;
+        return $this->clientSecret;
     }
 }
