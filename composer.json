@@ -15,9 +15,9 @@
         "php": ">=7.4",
         "yiisoft/yii2": "2.*",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "symfony/property-access": "^5.4",
-        "symfony/property-info": "^5.4",
-        "symfony/serializer": "^5.4",
+        "symfony/property-access": ">=5.4",
+        "symfony/property-info": ">=5.4",
+        "symfony/serializer": ">=5.4",
         "doctrine/annotations": "^1.13",
         "devatmaliance/keycloak-admin-client": "0.*"
     },
